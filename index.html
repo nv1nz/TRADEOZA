@@ -1,134 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TRADEOZA</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TRADEOZA — Live Converter</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-6px); }
-      100% { transform: translateY(0px); }
-    }
+    @keyframes float { 0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)} }
     .float { animation: float 6s ease-in-out infinite; }
   </style>
 </head>
 <body class="bg-gradient-to-br from-gray-900 via-black to-gray-950 text-white min-h-screen">
 
-  <!-- Sidebar -->
-  <aside class="fixed left-0 top-0 h-full w-56 bg-white/5 backdrop-blur-xl border-r border-white/10 shadow-xl flex flex-col items-center py-8 space-y-8">
-    <h1 class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500 drop-shadow-lg">TRADEOZA</h1>
-    <nav class="flex flex-col space-y-5 text-base">
-      <a href="#news" class="hover:text-indigo-400 transition">📢 News</a>
-      <a href="#charts" class="hover:text-purple-400 transition">📊 Charts</a>
-      <a href="#analytics" class="hover:text-pink-400 transition">📈 Analytics</a>
-      <a href="#converter" class="hover:text-green-400 transition">💱 Converter</a>
-      <a href="#calc" class="hover:text-yellow-400 transition">🧮 Calculator</a>
-    </nav>
-  </aside>
+  <div class="max-w-6xl mx-auto p-8">
+    <header class="flex items-center justify-between mb-8">
+      <h1 class="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-500">TRADEOZA</h1>
+      <div class="text-sm text-gray-300">Live converter powered by ExchangeRate.host (with fallback to Frankfurter)</div>
+    </header>
 
-  <!-- Main Content -->
-  <main class="ml-60 p-8 grid lg:grid-cols-3 gap-6 max-w-7xl">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-    <!-- Forex News -->
-    <div id="news" class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-lg p-4 float hover:scale-105 transition duration-300 col-span-2">
-      <h2 class="text-lg font-semibold mb-3 text-indigo-400">📢 Forex News</h2>
-      <iframe src="https://www.forexfactory.com/calendar" 
-              width="100%" height="350" 
-              class="rounded-lg border border-gray-700 shadow"></iframe>
-    </div>
-
-    <!-- TradingView -->
-    <div id="charts" class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-lg p-4 float hover:scale-105 transition duration-300">
-      <h2 class="text-lg font-semibold mb-3 text-purple-400">📊 Live Chart</h2>
-      <div id="tradingview-widget" class="h-[350px] rounded-lg"></div>
-    </div>
-
-    <!-- Analytics -->
-    <div id="analytics" class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-lg p-4 float hover:scale-[1.02] transition duration-300 col-span-3">
-      <h2 class="text-lg font-semibold mb-3 text-pink-400">📈 Fundamental Analytics</h2>
-      <p class="text-gray-300">🚀 Coming soon: Real-time API-based financial metrics, sentiment analysis, and stock/forex insights.</p>
-    </div>
-
-    <!-- USD to INR Converter -->
-    <div id="converter" class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-lg p-4 float hover:scale-105 transition duration-300">
-      <h2 class="text-lg font-semibold mb-3 text-green-400">💱 USD → INR Converter</h2>
-      <div class="space-y-3">
-        <input type="number" id="usdInput" placeholder="Enter USD" class="w-full p-2 rounded bg-gray-800 border border-gray-600 text-white">
-        <button onclick="convertToINR()" class="w-full bg-green-500 hover:bg-green-600 text-white p-2 rounded font-semibold">Convert</button>
-        <p id="inrResult" class="text-gray-300 mt-2">INR: --</p>
+      <!-- News / Chart placeholders (kept compact) -->
+      <div class="col-span-2 bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/10 shadow-md">
+        <h2 class="text-lg font-semibold text-indigo-300 mb-2">📢 Forex News</h2>
+        <iframe src="https://www.forexfactory.com/calendar" class="w-full h-64 rounded-md border border-gray-700"></iframe>
       </div>
-    </div>
 
-    <!-- Calculator -->
-    <div id="calc" class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-lg p-4 float hover:scale-105 transition duration-300">
-      <h2 class="text-lg font-semibold mb-3 text-yellow-400">🧮 Calculator</h2>
-      <input type="text" id="calcDisplay" disabled class="w-full p-2 rounded bg-gray-800 border border-gray-600 text-right text-white mb-3">
-      <div class="grid grid-cols-4 gap-2">
-        <button class="bg-gray-700 p-2 rounded" onclick="press('7')">7</button>
-        <button class="bg-gray-700 p-2 rounded" onclick="press('8')">8</button>
-        <button class="bg-gray-700 p-2 rounded" onclick="press('9')">9</button>
-        <button class="bg-indigo-600 p-2 rounded" onclick="press('/')">÷</button>
-
-        <button class="bg-gray-700 p-2 rounded" onclick="press('4')">4</button>
-        <button class="bg-gray-700 p-2 rounded" onclick="press('5')">5</button>
-        <button class="bg-gray-700 p-2 rounded" onclick="press('6')">6</button>
-        <button class="bg-indigo-600 p-2 rounded" onclick="press('*')">×</button>
-
-        <button class="bg-gray-700 p-2 rounded" onclick="press('1')">1</button>
-        <button class="bg-gray-700 p-2 rounded" onclick="press('2')">2</button>
-        <button class="bg-gray-700 p-2 rounded" onclick="press('3')">3</button>
-        <button class="bg-indigo-600 p-2 rounded" onclick="press('-')">−</button>
-
-        <button class="bg-gray-700 p-2 rounded" onclick="press('0')">0</button>
-        <button class="bg-gray-700 p-2 rounded" onclick="press('.')">.</button>
-        <button class="bg-green-600 p-2 rounded" onclick="calculate()">=</button>
-        <button class="bg-indigo-600 p-2 rounded" onclick="press('+')">+</button>
-
-        <button class="col-span-4 bg-red-600 p-2 rounded mt-2" onclick="clearCalc()">C</button>
+      <div class="bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/10 shadow-md">
+        <h2 class="text-lg font-semibold text-purple-300 mb-2">📊 Live Chart</h2>
+        <div id="tradingview-widget" class="h-64 rounded-md bg-black/30 flex items-center justify-center text-gray-400">TradingView widget</div>
       </div>
+
+      <!-- Fundamental Analytics (placeholder) -->
+      <div class="col-span-3 bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/10 shadow-md">
+        <h2 class="text-lg font-semibold text-pink-300 mb-2">📈 Fundamental Analytics</h2>
+        <p class="text-gray-300">Coming soon — API-based metrics / sentiment.</p>
+      </div>
+
+      <!-- USD->INR & Converter Utilities -->
+      <div id="converter-card" class="bg-white/6 backdrop-blur-xl rounded-2xl p-4 border border-white/12 shadow-lg float">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-lg font-semibold text-green-300">💱 Live Currency Converter</h3>
+          <span id="providerBadge" class="text-xs px-2 py-1 rounded bg-white/6 text-gray-200">Provider: —</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <input id="amount" type="number" value="1" step="any" class="col-span-1 sm:col-span-2 p-2 rounded bg-gray-800 border border-gray-700 text-white" />
+          <div class="col-span-1 sm:col-span-1">
+            <select id="fromCur" class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-white">
+              <!-- Common currencies; you can expand -->
+              <option value="USD" selected>USD</option>
+              <option value="EUR">EUR</option>
+              <option value="INR">INR</option>
+              <option value="GBP">GBP</option>
+              <option value="JPY">JPY</option>
+              <option value="AUD">AUD</option>
+            </select>
+          </div>
+          <div class="col-span-1 sm:col-span-1">
+            <select id="toCur" class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-white">
+              <option value="INR" selected>INR</option>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
+              <option value="JPY">JPY</option>
+            </select>
+          </div>
+
+          <button id="convertBtn" class="col-span-1 sm:col-span-1 bg-green-500 hover:bg-green-600 p-2 rounded font-semibold">Convert</button>
+          <button id="swapBtn" class="col-span-1 sm:col-span-1 bg-gray-700 hover:bg-gray-600 p-2 rounded">Swap</button>
+          <label class="col-span-1 sm:col-span-1 flex items-center gap-2 text-sm text-gray-300">
+            <input id="autoRefresh" type="checkbox" class="h-4 w-4" /> Auto-refresh
+          </label>
+        </div>
+
+        <div class="mt-4 rounded-md bg-white/3 p-3 border border-white/8">
+          <div class="flex items-center justify-between">
+            <div>
+              <div id="resultText" class="text-2xl font-bold">—</div>
+              <div id="rateText" class="text-sm text-gray-300 mt-1">Rate: —</div>
+            </div>
+            <div class="text-right text-xs text-gray-400">
+              <div id="rateTime">Updated: —</div>
+              <div id="sourceLink" class="mt-1"><a id="providerUrl" class="underline text-gray-300" href="#" target="_blank" rel="noreferrer">source</a></div>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-xs text-gray-400 mt-3">
+          Note: free APIs are accurate for most use-cases; for trading-grade microsecond/venue prices use a paid FX feed (Fixer, Currencylayer, brokers). See provider notes in the chat. 
+        </p>
+      </div>
+
+      <!-- Mini calculator (kept) -->
+      <div id="calc" class="bg-white/6 backdrop-blur-xl rounded-2xl p-4 border border-white/12 shadow-lg">
+        <h3 class="text-lg font-semibold text-yellow-300 mb-2">🧮 Calculator</h3>
+        <input id="calcDisplay" disabled class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-right text-white mb-3" />
+        <div class="grid grid-cols-4 gap-2">
+          <button class="p-2 rounded bg-gray-700" onclick="press('7')">7</button>
+          <button class="p-2 rounded bg-gray-700" onclick="press('8')">8</button>
+          <button class="p-2 rounded bg-gray-700" onclick="press('9')">9</button>
+          <button class="p-2 rounded bg-indigo-600" onclick="press('/')">÷</button>
+
+          <button class="p-2 rounded bg-gray-700" onclick="press('4')">4</button>
+          <button class="p-2 rounded bg-gray-700" onclick="press('5')">5</button>
+          <button class="p-2 rounded bg-gray-700" onclick="press('6')">6</button>
+          <button class="p-2 rounded bg-indigo-600" onclick="press('*')">×</button>
+
+          <button class="p-2 rounded bg-gray-700" onclick="press('1')">1</button>
+          <button class="p-2 rounded bg-gray-700" onclick="press('2')">2</button>
+          <button class="p-2 rounded bg-gray-700" onclick="press('3')">3</button>
+          <button class="p-2 rounded bg-indigo-600" onclick="press('-')">−</button>
+
+          <button class="p-2 rounded bg-gray-700" onclick="press('0')">0</button>
+          <button class="p-2 rounded bg-gray-700" onclick="press('.')">.</button>
+          <button class="p-2 rounded bg-green-600" onclick="calculate()">=</button>
+          <button class="p-2 rounded bg-indigo-600" onclick="press('+')">+</button>
+
+          <button class="col-span-4 mt-2 bg-red-600 p-2 rounded" onclick="clearCalc()">C</button>
+        </div>
+      </div>
+
     </div>
+  </div>
 
-  </main>
-
-  <!-- TradingView Script -->
+  <!-- TradingView script placeholder (keeps earlier functionality) -->
   <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-  <script type="text/javascript">
-    new TradingView.widget({
-      "width": "100%",
-      "height": "350",
-      "symbol": "NASDAQ:AAPL",
-      "interval": "D",
-      "timezone": "Etc/UTC",
-      "theme": "dark",
-      "style": "1",
-      "locale": "en",
-      "container_id": "tradingview-widget"
-    });
 
-    // USD to INR (fixed rate for demo, can connect API later)
-    function convertToINR() {
-      const rate = 83.2; // example rate
-      let usd = document.getElementById("usdInput").value;
-      let inr = (usd * rate).toFixed(2);
-      document.getElementById("inrResult").innerText = `INR: ₹${inr}`;
+  <script>
+    // Utility: format timestamp to human
+    function tsToLocal(ts) {
+      try {
+        if (!ts) return '—';
+        const d = new Date(ts * 1000);
+        return d.toLocaleString();
+      } catch { return '—'; }
     }
 
-    // Calculator
-    function press(val) {
-      document.getElementById("calcDisplay").value += val;
+    // Main converter logic (ExchangeRate.host primary, Frankfurter fallback)
+    const providerBadge = document.getElementById('providerBadge');
+    const providerUrl = document.getElementById('providerUrl');
+    const rateText = document.getElementById('rateText');
+    const resultText = document.getElementById('resultText');
+    const rateTime = document.getElementById('rateTime');
+    const convertBtn = document.getElementById('convertBtn');
+    const autoRefreshCheckbox = document.getElementById('autoRefresh');
+
+    let autoInterval = null;
+
+    async function fetchFromExchangeRateHost(from, to, amount) {
+      // exchangerate.host convert endpoint (no key required for public use)
+      const url = `https://api.exchangerate.host/convert?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&amount=${encodeURIComponent(amount)}&places=6`;
+      const r = await fetch(url);
+      if (!r.ok) throw new Error('ERH network error');
+      const data = await r.json();
+      // typical fields: result, info.rate, date, query
+      if (data && (data.result !== undefined)) {
+        return {
+          provider: 'ExchangeRate.host',
+          providerUrl: 'https://exchangerate.host',
+          rate: data.info?.rate ?? (data.result/amount),
+          result: data.result,
+          timestamp: data.info?.timestamp ?? Math.floor(new Date(data.date).getTime()/1000),
+          raw: data
+        };
+      }
+      throw new Error('ERH invalid response');
+    }
+
+    async function fetchFromFrankfurter(from, to, amount) {
+      // frankfurter: limited to daily ECB rates (base param supported)
+      const url = `https://api.frankfurter.dev/v1/latest?base=${encodeURIComponent(from)}&symbols=${encodeURIComponent(to)}`;
+      const r = await fetch(url);
+      if (!r.ok) throw new Error('Frankfurter network error');
+      const data = await r.json();
+      if (data && data.rates && data.rates[to]) {
+        const rate = data.rates[to];
+        return {
+          provider: 'Frankfurter (ECB)',
+          providerUrl: 'https://www.frankfurter.dev',
+          rate: rate,
+          result: (amount * rate),
+          timestamp: Math.floor(new Date(data.date + 'T00:00:00Z').getTime()/1000),
+          raw: data
+        };
+      }
+      throw new Error('Frankfurter invalid response');
+    }
+
+    async function convert() {
+      const amount = parseFloat(document.getElementById('amount').value || '0') || 0;
+      const from = document.getElementById('fromCur').value;
+      const to = document.getElementById('toCur').value;
+      convertBtn.disabled = true;
+      convertBtn.innerText = 'Converting...';
+
+      try {
+        // Try primary provider
+        let res = await fetchFromExchangeRateHost(from, to, amount);
+        showResult(res);
+      } catch (errPrimary) {
+        console.warn('Primary provider failed:', errPrimary);
+        // Try fallback
+        try {
+          let res2 = await fetchFromFrankfurter(from, to, amount);
+          showResult(res2);
+        } catch (err2) {
+          console.error('Fallback failed:', err2);
+          // final error
+          providerBadge.innerText = 'Provider: none';
+          resultText.innerText = 'Error fetching rate';
+          rateText.innerText = '';
+          rateTime.innerText = 'Updated: —';
+          providerUrl.href = '#';
+        }
+      } finally {
+        convertBtn.disabled = false;
+        convertBtn.innerText = 'Convert';
+      }
+    }
+
+    function showResult(res) {
+      providerBadge.innerText = `Provider: ${res.provider}`;
+      providerUrl.href = res.providerUrl;
+      providerUrl.innerText = res.providerUrl;
+      rateText.innerText = `1 ${document.getElementById('fromCur').value} = ${Number(res.rate).toLocaleString(undefined, {maximumFractionDigits:6})} ${document.getElementById('toCur').value}`;
+      resultText.innerText = `${Number(res.result).toLocaleString(undefined, {maximumFractionDigits:6})} ${document.getElementById('toCur').value}`;
+      rateTime.innerText = `Updated: ${tsToLocal(res.timestamp)}`;
+    }
+
+    // UI wiring
+    document.getElementById('convertBtn').addEventListener('click', convert);
+    document.getElementById('swapBtn').addEventListener('click', () => {
+      const from = document.getElementById('fromCur').value;
+      const to = document.getElementById('toCur').value;
+      document.getElementById('fromCur').value = to;
+      document.getElementById('toCur').value = from;
+    });
+
+    // Auto-refresh toggle
+    autoRefreshCheckbox.addEventListener('change', () => {
+      if (autoRefreshCheckbox.checked) {
+        // refresh every 30 seconds (adjust as needed)
+        autoInterval = setInterval(convert, 30000);
+        convert(); // immediate
+      } else {
+        clearInterval(autoInterval);
+      }
+    });
+
+    // Minimal calculator functions (kept)
+    function press(v) {
+      document.getElementById('calcDisplay').value += v;
     }
     function calculate() {
       try {
-        document.getElementById("calcDisplay").value = eval(document.getElementById("calcDisplay").value);
-      } catch {
-        document.getElementById("calcDisplay").value = "Error";
+        document.getElementById('calcDisplay').value = eval(document.getElementById('calcDisplay').value);
+      } catch (e) {
+        document.getElementById('calcDisplay').value = 'Error';
       }
     }
-    function clearCalc() {
-      document.getElementById("calcDisplay").value = "";
-    }
+    function clearCalc() { document.getElementById('calcDisplay').value = ''; }
+
+    // (optional) run initial conversion on load
+    window.addEventListener('load', () => {
+      providerBadge.innerText = 'Provider: ExchangeRate.host';
+      providerUrl.href = 'https://exchangerate.host';
+      convert();
+    });
   </script>
 
 </body>
